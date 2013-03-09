@@ -112,8 +112,8 @@
           <moduleHasSocketUses Id="c5db3d7a-4963-450e-9f9e-c9c4473f1913">
             <socketUse Id="4da87ced-a078-4fc6-9c1f-3008ec0b190d" label="XY">
               <socket>
-                <socketUseReferencesSocket Id="5d741143-4ac0-414f-b231-fc9e2e0e5fef">
-                  <socketMoniker Id="4d9a5bee-247c-4e83-85c8-bd37119de2a9" />
+                <socketUseReferencesSocket Id="b7547738-aff3-4f31-9e49-0e70e19068ba">
+                  <socketMoniker Id="89df989f-a766-4be6-8cf2-07d5578cd50d" />
                 </socketUseReferencesSocket>
               </socket>
             </socketUse>

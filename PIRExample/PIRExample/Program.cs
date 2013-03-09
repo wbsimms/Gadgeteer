@@ -16,6 +16,7 @@ namespace PIRExample
 {
     public partial class Program
     {
+        private static int counter = 0;
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
@@ -35,8 +36,15 @@ namespace PIRExample
 
             // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
             Debug.Print("Program Started");
+            motion_Sensor.Motion_Sensed += new Motion_Sensor.Motion_SensorEventHandler(motion_Sensor_Motion_Sensed);
 
             this.display_T35.SimpleGraphics.DisplayText("Testing working",Resources.GetFont(Resources.FontResources.NinaB),Color.White,10,10);
+        }
+
+        void motion_Sensor_Motion_Sensed(Motion_Sensor sender, Motion_Sensor.Motion_SensorState state)
+        {
+//            display_T35.SimpleGraphics.DisplayText("Motion Sensed", Resources.GetFont(Resources.FontResources.NinaB), Color.White, 10, 10);
+            Debug.Print("Motion Detected! "+counter++);
         }
     }
 }

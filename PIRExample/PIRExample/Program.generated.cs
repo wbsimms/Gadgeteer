@@ -36,9 +36,9 @@ namespace PIRExample
             // Initialize GTM.Modules and event handlers here.		
             usbClientDP = new GTM.GHIElectronics.UsbClientDP(1);
 		
-            display_T35 = new GTM.GHIElectronics.Display_T35(14, 13, 12, 10);
+            motion_Sensor = new GTM.GHIElectronics.Motion_Sensor(4);
 		
-            motion_Sensor = new GTM.GHIElectronics.Motion_Sensor(11);
+            display_T35 = new GTM.GHIElectronics.Display_T35(14, 13, 12, 10);
 
         }
     }
