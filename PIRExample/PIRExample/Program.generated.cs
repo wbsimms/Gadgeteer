@@ -16,11 +16,14 @@ namespace PIRExample
     public partial class Program : Gadgeteer.Program
     {
         // GTM.Module definitions
+        Gadgeteer.Modules.GHIElectronics.UsbClientDP usbClientDP;
+        Gadgeteer.Modules.GHIElectronics.Display_T35 display_T35;
+        Gadgeteer.Modules.GHIElectronics.Motion_Sensor motion_Sensor;
 
         public static void Main()
         {
             //Important to initialize the Mainboard first
-            Mainboard = new GHIElectronics.Gadgeteer.FEZCerberus();			
+            Mainboard = new GHIElectronics.Gadgeteer.FEZSpider();			
 
             Program program = new Program();
             program.InitializeModules();
@@ -30,7 +33,13 @@ namespace PIRExample
 
         private void InitializeModules()
         {   
-            // Initialize GTM.Modules and event handlers here.
+            // Initialize GTM.Modules and event handlers here.		
+            usbClientDP = new GTM.GHIElectronics.UsbClientDP(1);
+		
+            display_T35 = new GTM.GHIElectronics.Display_T35(14, 13, 12, 10);
+		
+            motion_Sensor = new GTM.GHIElectronics.Motion_Sensor(11);
+
         }
     }
 }

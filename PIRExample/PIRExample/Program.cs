@@ -10,6 +10,7 @@ using Microsoft.SPOT.Touch;
 using Gadgeteer.Networking;
 using GT = Gadgeteer;
 using GTM = Gadgeteer.Modules;
+using Gadgeteer.Modules.GHIElectronics;
 
 namespace PIRExample
 {
@@ -34,6 +35,8 @@ namespace PIRExample
 
             // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
             Debug.Print("Program Started");
+
+            this.display_T35.SimpleGraphics.DisplayText("Testing working",Resources.GetFont(Resources.FontResources.NinaB),Color.White,10,10);
         }
     }
 }
