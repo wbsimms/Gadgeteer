@@ -35,20 +35,44 @@
 
 <p><a href="http://www.ghielectronics.com/technologies/.net-gadgeteer">Gadgeteer</a> is open-source hardware implementation using the <a href="http://www.netmf.com/">.NET Micro Framework</a> from GHI Electronics. GHI provides some excellent code snippets for many of their Gadgeteer modules. However, they don't provide any full working solutions.  This project documents many of their modules with full working Visual Studio solution files.</p>
 
+<hr />
 <h3>2013/04/14 WiFi RS21 Example</h3>
 <h4>Using the Wifi RS21 Module to host a server</h4>
-<pre><code>
-            if (!wifi_RS21.Interface.IsOpen)
-            {
-                wifi_RS21.Interface.Open();
-            }
-            if (!wifi_RS21.Interface.NetworkInterface.IsDhcpEnabled)
-            {
-                wifi_RS21.Interface.NetworkInterface.EnableDhcp();
-            }
-</code></pre>
+<p>This is the standard way to open and enable the wifi_RS21 interface.</p>
+<pre><code>if (!wifi_RS21.Interface.IsOpen)
+{
+	wifi_RS21.Interface.Open();
+}
+if (!wifi_RS21.Interface.NetworkInterface.IsDhcpEnabled)
+{
+	wifi_RS21.Interface.NetworkInterface.EnableDhcp();
+}</code></pre>
+<p>You must subscribe the NetworkAddressChanged event to get IP address</p>
+<pre><code>wifi_RS21.Interface.NetworkAddressChanged += new NetworkInterfaceExtension.NetworkAddressChangedEventHandler(Interface_NetworkAddressChanged);</code></pre>
 
+<p>This method will catch the IP Address</p>
+<pre><code>void Interface_NetworkAddressChanged(object sender, EventArgs e)
+{
+	ipAddress = wifi_RS21.Interface.NetworkInterface.IPAddress;
+}</code></pre>
 
+<p>Running the server is easy at this point.</p>
+<pre><code>public void RunServer()
+{
+	WebEvent GetValueEvent = WebServer.SetupWebEvent("GetValue");
+	GetValueEvent.WebEventReceived += new WebEvent.ReceivedWebEventHandler(GetValueEvent_WebEventReceived);
+	WebServer.StartLocalServer(ipAddress, 80);
+}</code></pre>
+
+<p>The web event received can return any data you desire</p>
+<pre><code>void GetValueEvent_WebEventReceived(string path, WebServer.HttpMethod method, Responder responder)
+{
+responder.Respond("testing");
+}</code></pre>
+
+<p>Download the full WiFiRS21 code for a full example</p>
+
+<hr />
 <h3>Request for examples</h3>
 
 <p>Please contact me at <a href="http://wbsimms.com">wbsimms.com</a> if you want a specific example published.</p>
