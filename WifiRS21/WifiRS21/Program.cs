@@ -17,26 +17,40 @@ namespace WifiRS21
 {
     public partial class Program
     {
-        // This method is run when the mainboard is powered up or reset.   
+        Font ninaB = Resources.GetFont(Resources.FontResources.NinaB);
+        private uint currentY = 1;
+        private string ipAddress;
+        private bool serverStarted = false;
+        private string SSID = "";
+        private string PASSWORD = "";
         void ProgramStarted()
         {
-            /*******************************************************************************************
-            Modules added in the Program.gadgeteer designer view are used by typing 
-            their name followed by a period, e.g.  button.  or  camera.
-            
-            Many modules generate useful events. Type +=<tab><tab> to add a handler to an event, e.g.:
-                button.ButtonPressed +=<tab><tab>
-            
-            If you want to do something periodically, use a GT.Timer and handle its Tick event, e.g.:
-                GT.Timer timer = new GT.Timer(1000); // every second (1000ms)
-                timer.Tick +=<tab><tab>
-                timer.Start();
-            *******************************************************************************************/
+            display_T35.SimpleGraphics.DisplayText("Press Button to load page", ninaB, Color.White, 1, currentY);
+            currentY += (uint)ninaB.Height;
+            button.ButtonPressed += new Button.ButtonEventHandler(button_ButtonPressed);
+        }
 
+        void button_ButtonPressed(Button sender, Button.ButtonState state)
+        {
+            display_T35.SimpleGraphics.DisplayText("Button Pressed.....", ninaB, Color.White, 1, currentY);
+            currentY += (uint)ninaB.Height;
 
-            // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
-            Debug.Print("Program Started");
+            if (!serverStarted)
+                StartServer();
+            else
+                StopServer();
+        }
 
+        private void StopServer()
+        {
+            WebServer.StopLocalServer();
+            serverStarted = false;
+            display_T35.SimpleGraphics.DisplayText("Server Stopped", ninaB, Color.White, 1, currentY);
+            currentY += (uint)ninaB.Height;
+        }
+
+        private void StartServer()
+        {
             if (!wifi_RS21.Interface.IsOpen)
             {
                 wifi_RS21.Interface.Open();
@@ -46,23 +60,52 @@ namespace WifiRS21
                 wifi_RS21.Interface.NetworkInterface.EnableDhcp();
             }
 
-            NetworkInterfaceExtension.AssignNetworkingStackTo(wifi_RS21.Interface);
-
-            WiFiNetworkInfo[] scanResponse = wifi_RS21.Interface.Scan("yournetwork");
-            if (scanResponse != null)
+            if (!wifi_RS21.Interface.IsLinkConnected)
             {
-                wifi_RS21.Interface.Join(scanResponse[0],"yourkey");
+                wifi_RS21.Interface.NetworkAddressChanged += new NetworkInterfaceExtension.NetworkAddressChangedEventHandler(Interface_NetworkAddressChanged);
+                NetworkInterfaceExtension.AssignNetworkingStackTo(wifi_RS21.Interface);
+                WiFiNetworkInfo[] scanResponse = wifi_RS21.Interface.Scan(SSID);
+                if (scanResponse != null)
+                {
+                    wifi_RS21.Interface.Join(scanResponse[0], PASSWORD);
+                }
             }
-
-            HttpRequest request = WebClient.GetFromWeb("http://wbsimms.com");
-            request.ResponseReceived += new HttpRequest.ResponseHandler(request_ResponseReceived);
-
+            else
+            {
+                RunServer();
+            }
         }
 
-        void request_ResponseReceived(HttpRequest sender, HttpResponse response)
+        void Interface_NetworkAddressChanged(object sender, EventArgs e)
         {
-            string text = response.Text;
-            Debug.Print(text);
+            ipAddress = wifi_RS21.Interface.NetworkInterface.IPAddress;
+            display_T35.SimpleGraphics.DisplayText("Received IP Address : "+ipAddress, ninaB, Color.White, 1, currentY);
+            currentY += (uint)ninaB.Height;
+            RunServer();
+        }
+
+        public void RunServer()
+        {
+            display_T35.SimpleGraphics.DisplayText("Starting Server", ninaB, Color.White, 1, currentY);
+            currentY += (uint)ninaB.Height;
+
+            WebEvent GetValueEvent = WebServer.SetupWebEvent("GetValue");
+            GetValueEvent.WebEventReceived += new WebEvent.ReceivedWebEventHandler(GetValueEvent_WebEventReceived);
+
+            WebServer.StartLocalServer(ipAddress, 80);
+            serverStarted = true;
+        }
+
+        void GetValueEvent_WebEventReceived(string path, WebServer.HttpMethod method, Responder responder)
+        {
+            display_T35.SimpleGraphics.DisplayText("Received Request...", ninaB, Color.White, 1, currentY);
+            currentY += (uint)ninaB.Height;
+            
+            responder.Respond("testing");
+
+            display_T35.SimpleGraphics.DisplayText("Sending response...", ninaB, Color.White, 1, currentY);
+            currentY += (uint)ninaB.Height;
+
         }
     }
 }
