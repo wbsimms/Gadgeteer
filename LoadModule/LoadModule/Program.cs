@@ -33,11 +33,10 @@ namespace LoadModule
             }
             else
             {
+                // turn it off
                 runMotor = false;
                 load.P1.Write(false);
             }
-
-
         }
     }
 }
