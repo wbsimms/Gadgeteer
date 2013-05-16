@@ -23,7 +23,6 @@ namespace DisplayModule
         private uint currentHeight = 0;
         private Font f;
 
-        // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
             multiLedColors.Enqueue(GT.Color.White);
