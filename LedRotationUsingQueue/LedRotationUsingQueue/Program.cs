@@ -16,15 +16,16 @@ namespace LedRotationUsingQueue
 
     public partial class Program
     {
-        public Queue multiLedColors = new Queue();
+        public Queue multiLedColors;
         private GT.Timer ledTimer;
         private uint displayHeight;
         private uint fontHeight;
-        private uint currentHeight = 0;
+        private uint currentHeight;
         private Font f;
 
         void ProgramStarted()
         {
+            multiLedColors = new Queue();
             multiLedColors.Enqueue(GT.Color.White);
             multiLedColors.Enqueue(GT.Color.Blue);
             multiLedColors.Enqueue(GT.Color.Red);
@@ -37,6 +38,7 @@ namespace LedRotationUsingQueue
             f = Resources.GetFont(Resources.FontResources.NinaB);
             fontHeight = (uint)f.Height;
             displayHeight = display_T35.Height;
+            currentHeight = 0;
 
             button.ButtonPressed += button_ButtonPressed;
         }
