@@ -25,7 +25,6 @@ namespace DisplayModuleTouch
 
             Window window = display_T35.WPFWindow;
             window.Background = new SolidColorBrush(Color.Black);
-            window.Foreground = new SolidColorBrush(Color.White);
             Panel p = new Panel();
             window.Child = p;
 
@@ -62,13 +61,13 @@ namespace DisplayModuleTouch
 
         public StackPanel GetStackPanel(String text, Border border)
         {
-            StackPanel offSp = new StackPanel(Orientation.Horizontal);
-            offSp.SetMargin(10);
-            offSp.HorizontalAlignment = HorizontalAlignment.Stretch;
-            offSp.VerticalAlignment = VerticalAlignment.Top;
-            offSp.Children.Add(new Text(f, text) { ForeColor = Color.White, Width = 60, Height = border.Height, VerticalAlignment = VerticalAlignment.Center });
-            offSp.Children.Add(border);
-            return offSp;
+            StackPanel sp = new StackPanel(Orientation.Horizontal);
+            sp.SetMargin(10);
+            sp.HorizontalAlignment = HorizontalAlignment.Stretch;
+            sp.VerticalAlignment = VerticalAlignment.Top;
+            sp.Children.Add(new Text(f, text) { ForeColor = Color.White, Width = 60, Height = border.Height, VerticalAlignment = VerticalAlignment.Center });
+            sp.Children.Add(border);
+            return sp;
         }
 
         void TurnOff(object sender, Microsoft.SPOT.Input.TouchEventArgs e)
