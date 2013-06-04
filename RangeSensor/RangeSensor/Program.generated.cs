@@ -23,6 +23,8 @@ namespace RangeSensor {
         
         private Gadgeteer.Modules.GHIElectronics.Extender extender;
         
+        private Gadgeteer.Modules.GHIElectronics.Distance_US3 distance_US3;
+        
         public static void Main() {
             // Important to initialize the Mainboard first
             Program.Mainboard = new GHIElectronics.Gadgeteer.FEZSpider();
@@ -35,9 +37,10 @@ namespace RangeSensor {
         
         private void InitializeModules() {
             this.usbClientDP = new GTM.GHIElectronics.UsbClientDP(1);
+            this.distance_US3 = new GTM.GHIElectronics.Distance_US3(5);
+            this.extender = new GTM.GHIElectronics.Extender(6);
             this.button = new GTM.GHIElectronics.Button(8);
             this.display_T35 = new GTM.GHIElectronics.Display_T35(14, 13, 12, 10);
-            this.extender = new GTM.GHIElectronics.Extender(11);
         }
     }
 }
