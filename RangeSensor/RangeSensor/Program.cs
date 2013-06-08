@@ -12,7 +12,7 @@ namespace RangeSensor
     {
         public int AcceptableErrorRate = 10;
         public readonly int SENSOR_ERROR = -1;
-        GT.Timer timer = new GT.Timer(1000);
+        GT.Timer timer = new GT.Timer(5000);
         private bool timerStarted = false;
         private Font f;
         private uint fontHeight;
@@ -29,6 +29,12 @@ namespace RangeSensor
             Debug.Print("Program Started");
             timer.Tick += timer_Tick;
             button.ButtonPressed += button_ButtonPressed;
+            camera.PictureCaptured += camera_PictureCaptured;
+        }
+
+        void camera_PictureCaptured(GTM.GHIElectronics.Camera sender, GT.Picture picture)
+        {
+            display_T35.SimpleGraphics.DisplayImage(picture,0,0);
         }
 
         void button_ButtonPressed(GTM.GHIElectronics.Button sender, GTM.GHIElectronics.Button.ButtonState state)
@@ -47,7 +53,15 @@ namespace RangeSensor
 
         void timer_Tick(GT.Timer timer)
         {
-            DisplaySimpleText("Theirs : " + distance_US3.GetDistanceInCentimeters(5));
+            int distance = distance_US3.GetDistanceInCentimeters(5);
+            Debug.Print("Theirs : " + distance);
+            if (distance > 50 && distance < 100)
+            {
+                if (camera.CameraReady)
+                {
+                    camera.TakePicture();
+                }
+            }
         }
 
         private void DisplaySimpleText(String text)
