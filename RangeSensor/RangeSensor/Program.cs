@@ -12,7 +12,7 @@ namespace RangeSensor
     {
         public int AcceptableErrorRate = 10;
         public readonly int SENSOR_ERROR = -1;
-        GT.Timer timer = new GT.Timer(5000);
+        GT.Timer timer = new GT.Timer(3000);
         private bool timerStarted = false;
         private Font f;
         private uint fontHeight;
