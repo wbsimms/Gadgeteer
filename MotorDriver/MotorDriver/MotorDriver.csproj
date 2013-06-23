@@ -42,6 +42,7 @@
   <!-- Everything below here is custom to .NET MF / Gadgeteer template-->
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
+    <Compile Include="JoystickHelper.cs" />
     <Compile Include="Program.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -54,6 +55,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SimpleDisplayHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Gadgeteer">
@@ -62,7 +64,13 @@
     <Reference Include="GHIElectronics.Gadgeteer.FEZSpider, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="GTM.GHIElectronics.Button, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="GTM.GHIElectronics.Display_T35, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="GTM.GHIElectronics.Joystick, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="GTM.GHIElectronics.MotorControllerL298, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">

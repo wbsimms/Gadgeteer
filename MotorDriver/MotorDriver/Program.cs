@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Threading;
-using Gadgeteer.Modules.GHIElectronics;
+﻿using Gadgeteer.Modules.GHIElectronics;
 using Microsoft.SPOT;
-using Microsoft.SPOT.Presentation;
-using Microsoft.SPOT.Presentation.Controls;
-using Microsoft.SPOT.Presentation.Media;
-using Microsoft.SPOT.Touch;
-
-using Gadgeteer.Networking;
+using WBSimms.Com;
 using GT = Gadgeteer;
 using GTM = Gadgeteer.Modules;
 
@@ -16,34 +8,43 @@ namespace MotorDriver
 {
     public partial class Program
     {
-        private bool touch = false;
+        private bool motorEnabled = false;
+        private SimpleDisplayHelper displayHelper;
+        private JoystickHelper joystickHelper;
+        private Font f = Resources.GetFont(Resources.FontResources.NinaB);
+
         void ProgramStarted()
         {
-            Debug.Print("Program Started");
-
             motorControllerL298.DebugPrintEnabled = true;
 
-            Window window = display_T35.WPFWindow;
-            Panel panel = new Panel();
-            window.Child = panel;
-            panel.TouchDown += panel_TouchDown;
+            displayHelper = new SimpleDisplayHelper(display_T35,f.Height);
+            joystickHelper = new JoystickHelper(joystick);
+            button.ButtonPressed += button_ButtonPressed;
+            displayHelper.DisplayText("Program Started");
+
+
+            joystickHelper.JoystickMoved += JoystickHelperJoystickMoved;
         }
 
-        void panel_TouchDown(object sender, Microsoft.SPOT.Input.TouchEventArgs e)
+        void JoystickHelperJoystickMoved(object sender, JoystickEventsArgs args)
         {
-            if (!touch)
+            displayHelper.DisplayText("X : "+args.X+ " -- Y : "+args.Y);
+        }
+
+
+        void button_ButtonPressed(Button sender, Button.ButtonState state)
+        {
+            displayHelper.DisplayText("Button Pressed");
+            if (!motorEnabled)
             {
-                touch = true;
-                motorControllerL298.MoveMotorRamp(MotorControllerL298.Motor.Motor1, 50, 1000);
-                motorControllerL298.MoveMotorRamp(MotorControllerL298.Motor.Motor2, 100, 1000);
+                motorEnabled = true;
+                joystickHelper.Start();
             }
             else
             {
-                motorControllerL298.MoveMotorRamp(MotorControllerL298.Motor.Motor1, 0 ,1000);
-                motorControllerL298.MoveMotorRamp(MotorControllerL298.Motor.Motor2, 0, 1000);
-                touch = false;
+                motorEnabled = false;
+                joystickHelper.Stop();
             }
-
         }
     }
 }

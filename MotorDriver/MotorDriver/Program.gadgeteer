@@ -112,8 +112,38 @@
           <moduleHasSocketUses Id="6fae9b23-8885-4b78-9473-4c025783a644">
             <socketUse Id="66568aee-4b3e-4d21-a479-3ceb58d50b72" label="P">
               <socket>
-                <socketUseReferencesSocket Id="8c6e7f3a-4f87-4c23-962a-567e31a2ec3d">
+                <socketUseReferencesSocket Id="b6753ec9-013f-4b1c-9dc9-acd06a24474e">
+                  <socketMoniker Id="90b50ca1-6f9d-4638-b5f9-0aa7dc0bd57c" />
+                </socketUseReferencesSocket>
+              </socket>
+            </socketUse>
+          </moduleHasSocketUses>
+        </socketUses>
+      </module>
+    </gadgeteerModelHasGadgeteerHardware>
+    <gadgeteerModelHasGadgeteerHardware Id="e7956dee-ab33-441b-925e-6331158b468c">
+      <module Id="982b926e-a2e8-49a6-a76a-3f3d9168df23" cachedDefinition="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&#xD;&#xA;&lt;ModuleDefinition xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; Name=&quot;Button&quot; Type=&quot;Gadgeteer.Modules.GHIElectronics.Button&quot; HardwareVersion=&quot;1.2&quot; Image=&quot;C:\Program Files (x86)\GHI Electronics\GHI .NET Gadgeteer SDK\Modules\Button\Resources\Image.jpg&quot; BoardWidth=&quot;22&quot; BoardHeight=&quot;22&quot; MinimumGadgeteerCoreVersion=&quot;2.42.500&quot; HelpUrl=&quot;http://www.ghielectronics.com/catalog/product/274&quot; UniqueId=&quot;c241cd69-3f38-453d-bdc4-5679f4265302&quot; Manufacturer=&quot;GHI Electronics&quot; Description=&quot;A Button module with an embedded LED&quot; InstanceName=&quot;button&quot; ModuleSuppliesPower=&quot;false&quot;&gt;&#xD;&#xA;  &lt;Power&gt;&#xD;&#xA;    &lt;PowerRequirements Voltage=&quot;3.3&quot;&gt;&#xD;&#xA;      &lt;TypicalCurrent&gt;0.01&lt;/TypicalCurrent&gt;&#xD;&#xA;      &lt;MaximumCurrent&gt;0&lt;/MaximumCurrent&gt;&#xD;&#xA;    &lt;/PowerRequirements&gt;&#xD;&#xA;    &lt;PowerRequirements Voltage=&quot;5&quot;&gt;&#xD;&#xA;      &lt;TypicalCurrent&gt;0&lt;/TypicalCurrent&gt;&#xD;&#xA;      &lt;MaximumCurrent&gt;0&lt;/MaximumCurrent&gt;&#xD;&#xA;    &lt;/PowerRequirements&gt;&#xD;&#xA;  &lt;/Power&gt;&#xD;&#xA;  &lt;ProvidedSockets /&gt;&#xD;&#xA;  &lt;Assemblies&gt;&#xD;&#xA;    &lt;Assembly MFVersion=&quot;4.2&quot; Name=&quot;GTM.GHIElectronics.Button&quot; /&gt;&#xD;&#xA;  &lt;/Assemblies&gt;&#xD;&#xA;  &lt;LibrariesProvided /&gt;&#xD;&#xA;  &lt;Sockets&gt;&#xD;&#xA;    &lt;Socket Orientation=&quot;270&quot; Left=&quot;11.18&quot; Top=&quot;11.53&quot; TypesLabel=&quot;XY&quot; ConstructorOrder=&quot;1&quot; Optional=&quot;false&quot;&gt;&#xD;&#xA;      &lt;Types&gt;&#xD;&#xA;        &lt;Type&gt;X&lt;/Type&gt;&#xD;&#xA;        &lt;Type&gt;Y&lt;/Type&gt;&#xD;&#xA;      &lt;/Types&gt;&#xD;&#xA;      &lt;Pins&gt;&#xD;&#xA;        &lt;Pin Shared=&quot;false&quot;&gt;3&lt;/Pin&gt;&#xD;&#xA;        &lt;Pin Shared=&quot;false&quot;&gt;4&lt;/Pin&gt;&#xD;&#xA;      &lt;/Pins&gt;&#xD;&#xA;    &lt;/Socket&gt;&#xD;&#xA;  &lt;/Sockets&gt;&#xD;&#xA;  &lt;ExtraLibrariesRequired /&gt;&#xD;&#xA;&lt;/ModuleDefinition&gt;" name="button" moduleType="Gadgeteer.Modules.GHIElectronics.Button" moduleDefinitionId="c241cd69-3f38-453d-bdc4-5679f4265302">
+        <socketUses>
+          <moduleHasSocketUses Id="50c700e6-6c97-4bc0-96f0-c010255eb23e">
+            <socketUse Id="a220c394-40e8-4529-8b99-c4a2e3c0a9be" label="XY">
+              <socket>
+                <socketUseReferencesSocket Id="526376dc-2a47-4537-a95d-48e77a303537">
                   <socketMoniker Id="8abf547d-768e-45d4-abfe-cb3b1cdc3538" />
+                </socketUseReferencesSocket>
+              </socket>
+            </socketUse>
+          </moduleHasSocketUses>
+        </socketUses>
+      </module>
+    </gadgeteerModelHasGadgeteerHardware>
+    <gadgeteerModelHasGadgeteerHardware Id="074a3342-0cf6-4ad9-947c-fa4773953e44">
+      <module Id="eb2da3be-a4f6-481b-bb61-e8fd0c40cfe1" cachedDefinition="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&#xD;&#xA;&lt;ModuleDefinition xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; Name=&quot;Joystick&quot; Type=&quot;Gadgeteer.Modules.GHIElectronics.Joystick&quot; HardwareVersion=&quot;1.0&quot; Image=&quot;C:\Program Files (x86)\GHI Electronics\GHI .NET Gadgeteer SDK\Modules\Joystick\Resources\Image.jpg&quot; BoardWidth=&quot;37&quot; BoardHeight=&quot;32&quot; MinimumGadgeteerCoreVersion=&quot;2.42.500&quot; HelpUrl=&quot;http://www.ghielectronics.com/catalog/product/299&quot; UniqueId=&quot;aa865da8-43b7-494b-bd1f-7bf21911396d&quot; Manufacturer=&quot;GHI Electronics&quot; Description=&quot;A Joystick module&quot; InstanceName=&quot;joystick&quot; ModuleSuppliesPower=&quot;false&quot;&gt;&#xD;&#xA;  &lt;Power&gt;&#xD;&#xA;    &lt;PowerRequirements Voltage=&quot;3.3&quot;&gt;&#xD;&#xA;      &lt;TypicalCurrent&gt;0.001&lt;/TypicalCurrent&gt;&#xD;&#xA;      &lt;MaximumCurrent&gt;0.001&lt;/MaximumCurrent&gt;&#xD;&#xA;    &lt;/PowerRequirements&gt;&#xD;&#xA;    &lt;PowerRequirements Voltage=&quot;5&quot;&gt;&#xD;&#xA;      &lt;TypicalCurrent&gt;0&lt;/TypicalCurrent&gt;&#xD;&#xA;      &lt;MaximumCurrent&gt;0&lt;/MaximumCurrent&gt;&#xD;&#xA;    &lt;/PowerRequirements&gt;&#xD;&#xA;  &lt;/Power&gt;&#xD;&#xA;  &lt;ProvidedSockets /&gt;&#xD;&#xA;  &lt;Assemblies&gt;&#xD;&#xA;    &lt;Assembly MFVersion=&quot;4.2&quot; Name=&quot;GTM.GHIElectronics.Joystick&quot; /&gt;&#xD;&#xA;  &lt;/Assemblies&gt;&#xD;&#xA;  &lt;LibrariesProvided /&gt;&#xD;&#xA;  &lt;Sockets&gt;&#xD;&#xA;    &lt;Socket Orientation=&quot;0&quot; Left=&quot;19.13&quot; Top=&quot;15.32&quot; TypesLabel=&quot;A&quot; ConstructorOrder=&quot;1&quot; Optional=&quot;false&quot;&gt;&#xD;&#xA;      &lt;Types&gt;&#xD;&#xA;        &lt;Type&gt;A&lt;/Type&gt;&#xD;&#xA;      &lt;/Types&gt;&#xD;&#xA;      &lt;Pins&gt;&#xD;&#xA;        &lt;Pin Shared=&quot;false&quot;&gt;3&lt;/Pin&gt;&#xD;&#xA;        &lt;Pin Shared=&quot;false&quot;&gt;4&lt;/Pin&gt;&#xD;&#xA;        &lt;Pin Shared=&quot;false&quot;&gt;5&lt;/Pin&gt;&#xD;&#xA;      &lt;/Pins&gt;&#xD;&#xA;    &lt;/Socket&gt;&#xD;&#xA;  &lt;/Sockets&gt;&#xD;&#xA;  &lt;ExtraLibrariesRequired /&gt;&#xD;&#xA;&lt;/ModuleDefinition&gt;" name="joystick" moduleType="Gadgeteer.Modules.GHIElectronics.Joystick" moduleDefinitionId="aa865da8-43b7-494b-bd1f-7bf21911396d">
+        <socketUses>
+          <moduleHasSocketUses Id="7c144c25-88b7-4c77-813c-0a2f886c686e">
+            <socketUse Id="fafe6e1e-3269-4666-99bf-d9a17ed3da4e" label="A">
+              <socket>
+                <socketUseReferencesSocket Id="caba0280-aea8-42b2-a3b2-07d7795bba6f">
+                  <socketMoniker Id="e68448ac-882a-4756-bb0c-3fbf38eb6f90" />
                 </socketUseReferencesSocket>
               </socket>
             </socketUse>

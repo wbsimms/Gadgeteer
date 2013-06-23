@@ -21,6 +21,10 @@ namespace MotorDriver {
         
         private Gadgeteer.Modules.GHIElectronics.MotorControllerL298 motorControllerL298;
         
+        private Gadgeteer.Modules.GHIElectronics.Button button;
+        
+        private Gadgeteer.Modules.GHIElectronics.Joystick joystick;
+        
         public static void Main() {
             // Important to initialize the Mainboard first
             Program.Mainboard = new GHIElectronics.Gadgeteer.FEZSpider();
@@ -33,8 +37,10 @@ namespace MotorDriver {
         
         private void InitializeModules() {
             this.usbClientDP = new GTM.GHIElectronics.UsbClientDP(1);
-            this.motorControllerL298 = new GTM.GHIElectronics.MotorControllerL298(8);
+            this.button = new GTM.GHIElectronics.Button(8);
+            this.joystick = new GTM.GHIElectronics.Joystick(9);
             this.display_T35 = new GTM.GHIElectronics.Display_T35(14, 13, 12, 10);
+            this.motorControllerL298 = new GTM.GHIElectronics.MotorControllerL298(11);
         }
     }
 }
