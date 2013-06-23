@@ -1,5 +1,4 @@
-using System;
-using System.Threading;
+using Gadgeteer;
 using Gadgeteer.Modules.GHIElectronics;
 using Microsoft.SPOT;
 
@@ -11,9 +10,8 @@ namespace GadgeteerHelpers
         private Joystick joystick = null;
         public delegate void JoystickEventHander(object sender, JoystickEventsArgs args);
         public event JoystickEventHander JoystickMoved;
-        private Thread joystickThread;
-        private static bool runThread = false;
-
+        private Timer joystickTimer;
+        
         public JoystickHelper(Joystick joystick)
         {
             this.joystick = joystick;
@@ -21,29 +19,21 @@ namespace GadgeteerHelpers
 
         public void Start()
         {
-            joystickThread = new Thread(WatchJoystick);
-            runThread = true;
-            joystickThread.Start();
+            joystickTimer = new Timer(100);
+            joystickTimer.Tick += JoystickTimerOnTick;
+            joystickTimer.Start();
+        }
+
+        private void JoystickTimerOnTick(Timer timer)
+        {
+            GetJoystickPosition();
         }
 
         public void Stop()
         {
-            runThread = false;
-            joystickThread.Join();
-            joystickThread = null;
+            joystickTimer.Stop();
+            joystickTimer = null;
         }
-
-
-        private void WatchJoystick()
-        {
-            while (true)
-            {
-                if (!runThread) return; 
-                GetJoystickPosition();
-                Thread.Sleep(100);
-            }
-        }
-
 
         protected virtual void OnJoystickMoved(JoystickEventsArgs args)
         {

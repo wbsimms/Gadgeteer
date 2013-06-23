@@ -15,11 +15,12 @@ namespace GadgeteerHelpers
         private Display_T35 display_T35 = null;
         private uint displayHeight;
 
-        public SimpleDisplayHelper(Display_T35 display_t35, int fontHeight)
+        public SimpleDisplayHelper(Display_T35 display_t35, Font font)
         {
             this.display_T35 = display_t35;
             displayHeight = display_T35.Height;
-            this.fontHeight = fontHeight;
+            this.fontHeight = font.Height;
+            this.f = font;
         }
 
         public void DisplayText(string text)
