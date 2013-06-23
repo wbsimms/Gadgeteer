@@ -11,17 +11,17 @@ namespace MotorDriver
         private bool motorEnabled = false;
         private SimpleDisplayHelper displayHelper;
         private JoystickHelper joystickHelper;
-        private Font f = Resources.GetFont(Resources.FontResources.NinaB);
+        private Font font = Resources.GetFont(Resources.FontResources.NinaB);
 
         void ProgramStarted()
         {
             motorControllerL298.DebugPrintEnabled = true;
 
-            displayHelper = new SimpleDisplayHelper(display_T35,f);
-            joystickHelper = new JoystickHelper(joystick);
-            button.ButtonPressed += button_ButtonPressed;
+            displayHelper = new SimpleDisplayHelper(display_T35,font);
             displayHelper.DisplayText("Program Started");
+            button.ButtonPressed += button_ButtonPressed;
 
+            joystickHelper = new JoystickHelper(joystick);
             joystickHelper.JoystickMoved += JoystickHelperJoystickMoved;
         }
 
