@@ -3,7 +3,7 @@ using System.Threading;
 using Gadgeteer.Modules.GHIElectronics;
 using Microsoft.SPOT;
 
-namespace WBSimms.Com
+namespace GadgeteerHelpers
 {
     public class JoystickHelper
     {

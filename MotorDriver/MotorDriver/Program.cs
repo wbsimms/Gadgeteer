@@ -1,6 +1,6 @@
 ﻿using Gadgeteer.Modules.GHIElectronics;
+using GadgeteerHelpers;
 using Microsoft.SPOT;
-using WBSimms.Com;
 using GT = Gadgeteer;
 using GTM = Gadgeteer.Modules;
 
