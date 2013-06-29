@@ -5,10 +5,6 @@ using System.Threading;
 using GHI.Premium.Net;
 using GadgeteerHelpers;
 using Microsoft.SPOT;
-using Microsoft.SPOT.Presentation;
-using Microsoft.SPOT.Presentation.Controls;
-using Microsoft.SPOT.Presentation.Media;
-using Microsoft.SPOT.Touch;
 
 using Gadgeteer.Networking;
 using GT = Gadgeteer;
@@ -18,12 +14,9 @@ namespace DistanceLoggerWithWebReporting
 {
     public partial class Program
     {
-//        private SimpleDisplayHelper displayHelper;
         private bool started = false;
         private GT.Timer distanceThread;
         private IDictionary dictionary = new Hashtable();
-
-
 
         void ProgramStarted()
         {
@@ -40,6 +33,7 @@ namespace DistanceLoggerWithWebReporting
             {
                 DateTime now = DateTime.Now;
                 Debug.Print("At "+now+" distance recorded : " + distance);
+                multicolorLed.BlinkOnce(GT.Color.Green,new TimeSpan(0,0,0,1));
                 dictionary.Add(DateTime.Now, distance);
             }
         }
@@ -85,10 +79,5 @@ namespace DistanceLoggerWithWebReporting
             }
             responder.Respond(sb.ToString());
         }
-
-
-
-
-
     }
 }
