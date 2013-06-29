@@ -19,11 +19,9 @@ namespace DistanceLoggerWithWebReporting {
         
         private Gadgeteer.Modules.GHIElectronics.Button button;
         
-        private Gadgeteer.Modules.GHIElectronics.Display_T35 display_T35;
-        
-        private Gadgeteer.Modules.GHIElectronics.Motion_Sensor motion_Sensor;
-        
         private Gadgeteer.Modules.GHIElectronics.MulticolorLed multicolorLed;
+        
+        private Gadgeteer.Modules.GHIElectronics.Distance_US3 distance_US3;
         
         private Gadgeteer.Modules.GHIElectronics.WiFi_RS21 wifi_RS21;
         
@@ -40,10 +38,9 @@ namespace DistanceLoggerWithWebReporting {
         private void InitializeModules() {
             this.usbClientDP = new GTM.GHIElectronics.UsbClientDP(1);
             this.multicolorLed = new GTM.GHIElectronics.MulticolorLed(4);
-            this.motion_Sensor = new GTM.GHIElectronics.Motion_Sensor(5);
-            this.wifi_RS21 = new GTM.GHIElectronics.WiFi_RS21(6);
+            this.distance_US3 = new GTM.GHIElectronics.Distance_US3(5);
             this.button = new GTM.GHIElectronics.Button(8);
-            this.display_T35 = new GTM.GHIElectronics.Display_T35(14, 13, 12, 10);
+            this.wifi_RS21 = new GTM.GHIElectronics.WiFi_RS21(9);
         }
     }
 }
