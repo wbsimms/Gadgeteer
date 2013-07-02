@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Text;
 using GHI.Premium.Net;
 using Gadgeteer.Modules.GHIElectronics;
-using Gadgeteer.Networking;
 using Microsoft.SPOT;
 
 namespace GadgeteerHelpers
