@@ -53,16 +53,38 @@ namespace SimpleBuzzer
 
         void TouchDown(object sender, TouchEventArgs e)
         {
+
+            // timeHigh = 1/(2 * toneFrequency) = period / 2
+            /*
+             note         frequency
+             c            261 Hz   
+             c#			  277		
+             d            294 Hz   
+             d#			  311		
+             e            329 Hz   
+             f            349 Hz   
+             f#			  370		
+             g            392 Hz   
+             g#			  415
+             a            440 Hz   
+             a#			  466
+             b            493 Hz   
+             */
             Border b = (Border) sender;
             Text t = (Text) b.Child;
             uint tone = 2272; // A
-            if (t.TextContent == "C") tone = 3830;
-            if (t.TextContent == "D") tone = 3400;
-            if (t.TextContent == "E") tone = 3038;
-            if (t.TextContent == "F") tone = 2864;
-            if (t.TextContent == "G") tone = 2550;
-            if (t.TextContent == "A") tone = 2272;
-            if (t.TextContent == "B") tone = 2028;
+            if (t.TextContent == "C") tone = 3830; // whole
+            if (t.TextContent == "C#") tone = 3610; // whole
+            if (t.TextContent == "D") tone = 3400; // whole
+            if (t.TextContent == "D#") tone = 3216; // whole
+            if (t.TextContent == "E") tone = 3038; // half
+            if (t.TextContent == "F") tone = 2864; // whole
+            if (t.TextContent == "F#") tone = 2702; // whole
+            if (t.TextContent == "G") tone = 2550; // whole
+            if (t.TextContent == "G#") tone = 2410; // whole
+            if (t.TextContent == "A") tone = 2272; // whole
+            if (t.TextContent == "A#") tone = 2146; // whole
+            if (t.TextContent == "B") tone = 2028; // half
             
             pwm.Active = true;
             pwm.SetPulse(tone * 1000, (tone / 2) * 1000);
