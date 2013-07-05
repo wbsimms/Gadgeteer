@@ -22,7 +22,7 @@ namespace MusicalDistanceSensor
         private GT.Timer programTimer = new GT.Timer(500);
         private PWMOutput pwm;
         Queue colors = new Queue();
-
+        private uint lastTone = 0;
 
         void ProgramStarted()
         {
@@ -41,9 +41,6 @@ namespace MusicalDistanceSensor
         {
             int distance = distance_US3.GetDistanceInCentimeters(20);
             PlayNote(distance);
-            GT.Color c = (GT.Color)colors.Dequeue();
-            multicolorLed.TurnColor(c);
-            colors.Enqueue(c);
         }
 
         private void PlayNote(int distance)
@@ -78,8 +75,12 @@ namespace MusicalDistanceSensor
             if (distance < 15 && distance >= 8) tone = 2146; // whole
             if (distance < 8 && distance >= 0) tone = 2028; // half
 
+            if (tone == lastTone) return;
+            GT.Color c = (GT.Color)colors.Dequeue();
+            multicolorLed.TurnColor(c);
+            colors.Enqueue(c);
             pwm.SetPulse(tone * 1000, (tone / 2) * 1000);
-
+            lastTone = tone;
         }
 
         void button_ButtonPressed(GTM.GHIElectronics.Button sender, GTM.GHIElectronics.Button.ButtonState state)
