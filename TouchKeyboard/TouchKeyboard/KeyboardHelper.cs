@@ -1,29 +1,23 @@
 using System;
 using System.Collections;
-using Gadgeteer;
 using Gadgeteer.Modules.GHIElectronics;
 using Microsoft.SPOT;
-using Microsoft.SPOT.Input;
 using Microsoft.SPOT.Presentation;
 using Microsoft.SPOT.Presentation.Controls;
 using Microsoft.SPOT.Presentation.Media;
-using Microsoft.SPOT.Touch;
-using Color = Microsoft.SPOT.Presentation.Media.Color;
 
 namespace GadgeteerHelper
 {
-
     public class KeyboardHelper
     {
+        private KeyStateContext _keyState;
         private Display_T35 display;
         private Font font;
         private Text displayText;
-        private bool keysShifted = false;
-        private bool numPad = false;
         private IList keys = new ArrayList();
+
         public delegate void TextChangedEventHander(object sender, TextChangedEventArgs args);
         public event TextChangedEventHander TextChanged;
-
 
         StackPanel spacer = new StackPanel(Orientation.Horizontal);
         StackPanel spacer1 = new StackPanel(Orientation.Horizontal);
@@ -32,7 +26,7 @@ namespace GadgeteerHelper
         StackPanel keysRow3 = new StackPanel(Orientation.Horizontal);
         StackPanel keysRow4 = new StackPanel(Orientation.Horizontal);
         StackPanel keysRow5 = new StackPanel(Orientation.Horizontal);
- 
+
         public KeyboardHelper(Display_T35 display, Font font)
         {
             this.display = display;
@@ -81,6 +75,7 @@ namespace GadgeteerHelper
             keysRow5.Children.Add(spaceKey.RenderKey());
             keysRow5.Children.Add(delKey.RenderKey());
 
+            _keyState = new KeyStateContext(this);
         }
 
         private Key GetKeyAndAddToList(string text)
@@ -93,128 +88,65 @@ namespace GadgeteerHelper
 
         void keyPressedHandler(object sender, KeyPressedEventArgs args)
         {
-            
-            if (args.KeyPressed == "Shift" && !keysShifted)
+            if (args.KeyPressed == "Shift")
             {
-                keysShifted = true;
-                ShiftKeys();
-            }
-            else if (args.KeyPressed == "Shift" && keysShifted)
-            {
-                keysShifted = false;
-                UnShiftKeys(true);
+                _keyState.SwitchState();
             }
             else if (args.KeyPressed == "Space")
             {
                 displayText.TextContent = displayText.TextContent + " ";
+                OnTextChanged(sender);
             }
             else if (args.KeyPressed == "Delete")
             {
                 if (displayText.TextContent.Length == 0) return;
                 displayText.TextContent = displayText.TextContent.Substring(0,displayText.TextContent.Length-1);
+                OnTextChanged(sender);
             }
             else
             {
                 displayText.TextContent = displayText.TextContent + args.KeyPressed;
-                if (TextChanged != null)
-                {
-                    TextChanged(sender,new TextChangedEventArgs(displayText.TextContent));
-                }
+                OnTextChanged(sender);
             }
         }
 
-        private void UnShiftKeys(bool needRemoval)
+        private void OnTextChanged(object sender)
+        {
+            if (TextChanged != null)
+            {
+                TextChanged(sender, new TextChangedEventArgs(displayText.TextContent));
+            }
+        }
+
+        private void UnShiftKeys(bool needRemoval = true)
         {
             if (needRemoval)
             {
                 RemoveKeys();
             }
 
-            keysRow1.Children.Add(GetKeyAndAddToList("1").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("2").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("3").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("4").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("5").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("6").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("7").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("8").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("9").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("0").RenderKey());
-
-            keysRow2.Children.Add(GetKeyAndAddToList("q").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("w").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("e").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("r").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("t").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("y").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("u").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("i").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("o").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("p").RenderKey());
-
-            keysRow3.Children.Add(GetKeyAndAddToList("a").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("s").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("d").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("f").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("g").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("h").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("j").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("k").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("l").RenderKey());
-
-            keysRow4.Children.Add(GetKeyAndAddToList("z").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("x").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("c").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("v").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("b").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("n").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("m").RenderKey());
-
-
+            AddKeys(keysRow1, "1234567890");
+            AddKeys(keysRow2, "qwertyuiop");
+            AddKeys(keysRow3, "asdfghjkl");
+            AddKeys(keysRow4, "zxcvbnm");
         }
 
-        private void ShiftKeys()
+        protected void ShiftKeys()
         {
             RemoveKeys();
-            keysRow1.Children.Add(GetKeyAndAddToList("!").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("@").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("#").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("$").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("%").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("^").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("&").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("*").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList("(").RenderKey());
-            keysRow1.Children.Add(GetKeyAndAddToList(")").RenderKey());
 
-            keysRow2.Children.Add(GetKeyAndAddToList("Q").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("W").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("E").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("R").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("T").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("Y").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("U").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("I").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("O").RenderKey());
-            keysRow2.Children.Add(GetKeyAndAddToList("P").RenderKey());
+            AddKeys(keysRow1, "!@#$%^&*()");
+            AddKeys(keysRow2, "QWERTYUIOP");
+            AddKeys(keysRow3, "ASDFGHJKL");
+            AddKeys(keysRow4, "ZXCVBNM");
+        }
 
-            keysRow3.Children.Add(GetKeyAndAddToList("A").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("S").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("D").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("F").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("G").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("H").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("J").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("K").RenderKey());
-            keysRow3.Children.Add(GetKeyAndAddToList("L").RenderKey());
-
-            keysRow4.Children.Add(GetKeyAndAddToList("Z").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("X").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("C").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("V").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("B").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("N").RenderKey());
-            keysRow4.Children.Add(GetKeyAndAddToList("M").RenderKey());
+        private void AddKeys(StackPanel keysRow, string keys)
+        {
+            foreach (var character in keys)
+            {
+                keysRow.Children.Add(GetKeyAndAddToList(character.ToString()).RenderKey());
+            }
         }
 
         private void RemoveKeys()
@@ -229,16 +161,71 @@ namespace GadgeteerHelper
             keysRow3.Children.Clear();
             keysRow4.Children.Clear();
         }
-    }
 
+
+        private interface IKeyState
+        {
+            void CreateKeys();
+        }
+
+        private class KeyStateShifted : IKeyState
+        {
+            private KeyboardHelper _parent;
+            public KeyStateShifted(KeyboardHelper parent)
+            {
+                _parent = parent;
+            }
+
+            public void CreateKeys()
+            {
+                _parent.ShiftKeys();
+            }
+        }
+
+        private class KeyStateUnshifted : IKeyState
+        {
+            private KeyboardHelper _parent;
+            public KeyStateUnshifted(KeyboardHelper parent)
+            {
+                _parent = parent;
+            }
+
+            public void CreateKeys()
+            {
+                _parent.UnShiftKeys();
+            }
+        }
+
+        private class KeyStateContext
+        {
+            private IKeyState[] _keyStates;
+            private IKeyState _currentKeyState;
+
+            public KeyStateContext(KeyboardHelper parent)
+            {
+                _keyStates = new IKeyState[] { new KeyStateUnshifted(parent), new KeyStateShifted(parent) };
+                _currentKeyState = _keyStates[0];
+            }
+
+            public void SwitchState()
+            {
+                if (_currentKeyState is KeyStateUnshifted)
+                {
+                    _currentKeyState = _keyStates[1];
+                }
+                else
+                {
+                    _currentKeyState = _keyStates[0];
+                }
+                _currentKeyState.CreateKeys();
+            }
+        }
+    }
 
     public class Key : IDisposable
     {
         private string text = "";
-        private int width = 10;
-        private int height = 10;
-        private int padding = 10;
-        private int margin = 9;
+        private const int margin = 9;
         private Font font;
         public delegate void KeyPressedEventHander(object sender, KeyPressedEventArgs args);
         public event KeyPressedEventHander keyPressedHandler;
@@ -268,7 +255,14 @@ namespace GadgeteerHelper
 
         void b_TouchUp(object sender, Microsoft.SPOT.Input.TouchEventArgs e)
         {
-            Text t = ((Border) sender).Child as Text;
+            Border border = sender as Border;
+            if (border == null)
+            {
+                return;
+            }
+
+            Text t = border.Child as Text;
+
             string content = t.TextContent;
             if (keyPressedHandler != null)
             {
@@ -305,6 +299,4 @@ namespace GadgeteerHelper
             this.text = text;
         }
     }
-
-
 }
