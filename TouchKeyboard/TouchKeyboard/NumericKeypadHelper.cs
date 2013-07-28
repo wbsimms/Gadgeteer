@@ -1,22 +1,25 @@
+using System;
 using System.Collections;
 using Gadgeteer.Modules.GHIElectronics;
 using Microsoft.SPOT;
 using Microsoft.SPOT.Presentation;
 using Microsoft.SPOT.Presentation.Controls;
+using Microsoft.SPOT.Presentation.Media;
 using TouchKeyboard;
 
 namespace GadgeteerHelper
 {
-    public class KeyboardHelper
+    public class NumericKeypadHelper
     {
-        private KeyStateContext _keyState;
         private Display_T35 display;
         private Font font;
         private Text displayText;
         private IList keys = new ArrayList();
+        private int margin = 12;
 
         public delegate void TextChangedEventHander(object sender, TextChangedEventArgs args);
         public event TextChangedEventHander TextChanged;
+
         public delegate void EnterPressedEventHander(object sender, EnterPressedEventArgs args);
         public event EnterPressedEventHander EnterPressed;
 
@@ -27,9 +30,8 @@ namespace GadgeteerHelper
         StackPanel keysRow3 = new StackPanel(Orientation.Horizontal);
         StackPanel keysRow4 = new StackPanel(Orientation.Horizontal);
         StackPanel keysRow5 = new StackPanel(Orientation.Horizontal);
-        StackPanel keysRow6 = new StackPanel(Orientation.Horizontal);
 
-        public KeyboardHelper(Display_T35 display, Font font)
+        public NumericKeypadHelper(Display_T35 display, Font font)
         {
             this.display = display;
             this.font = font;
@@ -37,6 +39,7 @@ namespace GadgeteerHelper
             spacer.Height = 2;
             spacer1.Height = 2;
             Init();
+
         }
 
         public void Init()
@@ -58,36 +61,25 @@ namespace GadgeteerHelper
             sp.Children.Add(keysRow3);
             sp.Children.Add(keysRow4);
             sp.Children.Add(keysRow5);
-            sp.Children.Add(keysRow6);
             keysRow1.HorizontalAlignment = HorizontalAlignment.Center;
             keysRow2.HorizontalAlignment = HorizontalAlignment.Center;
             keysRow3.HorizontalAlignment = HorizontalAlignment.Center;
             keysRow4.HorizontalAlignment = HorizontalAlignment.Center;
             keysRow5.HorizontalAlignment = HorizontalAlignment.Center;
-            keysRow6.HorizontalAlignment = HorizontalAlignment.Center;
 
             UnShiftKeys(false);
 
-            Key shiftKey = new Key(font, "Shift");
-            shiftKey.keyPressedHandler += keyPressedHandler;
-            Key spaceKey = new Key(font, "Space");
-            spaceKey.keyPressedHandler += keyPressedHandler;
             Key delKey = new Key(font, "Delete");
             delKey.keyPressedHandler += keyPressedHandler;
-            keysRow5.Children.Add(shiftKey.RenderKey());
-            keysRow5.Children.Add(spaceKey.RenderKey());
             keysRow5.Children.Add(delKey.RenderKey());
             Key enterKey = new Key(font, "Enter");
             enterKey.keyPressedHandler += keyPressedHandler;
-            keysRow6.Children.Add(enterKey.RenderKey());
-
-
-            _keyState = new KeyStateContext(this);
+            keysRow5.Children.Add(enterKey.RenderKey());
         }
 
         private Key GetKeyAndAddToList(string text)
         {
-            Key k = new Key(font,text);
+            Key k = new Key(font,text,margin);
             k.keyPressedHandler += keyPressedHandler;
             keys.Add(k);
             return k;
@@ -95,25 +87,16 @@ namespace GadgeteerHelper
 
         void keyPressedHandler(object sender, KeyPressedEventArgs args)
         {
-            if (args.KeyPressed == "Shift")
+            if (args.KeyPressed == "Delete")
             {
-                _keyState.SwitchState();
-            }
-            else if (args.KeyPressed == "Space")
-            {
-                displayText.TextContent = displayText.TextContent + " ";
+                if (displayText.TextContent.Length == 0) return;
+                displayText.TextContent = displayText.TextContent.Substring(0,displayText.TextContent.Length-1);
                 OnTextChanged(sender);
             }
             else if (args.KeyPressed == "Enter")
             {
                 OnTextChanged(sender);
                 OnEnterPressed(sender);
-            }
-            else if (args.KeyPressed == "Delete")
-            {
-                if (displayText.TextContent.Length == 0) return;
-                displayText.TextContent = displayText.TextContent.Substring(0,displayText.TextContent.Length-1);
-                OnTextChanged(sender);
             }
             else
             {
@@ -126,7 +109,7 @@ namespace GadgeteerHelper
         {
             if (EnterPressed != null)
             {
-                EnterPressed(sender, new EnterPressedEventArgs(displayText.TextContent));
+                EnterPressed(sender,new EnterPressedEventArgs(displayText.TextContent));
             }
         }
 
@@ -145,20 +128,10 @@ namespace GadgeteerHelper
                 RemoveKeys();
             }
 
-            AddKeys(keysRow1, "1234567890");
-            AddKeys(keysRow2, "qwertyuiop");
-            AddKeys(keysRow3, "asdfghjkl");
-            AddKeys(keysRow4, "zxcvbnm");
-        }
-
-        protected void ShiftKeys()
-        {
-            RemoveKeys();
-
-            AddKeys(keysRow1, "!@#$%^&*()");
-            AddKeys(keysRow2, "QWERTYUIOP");
-            AddKeys(keysRow3, "ASDFGHJKL");
-            AddKeys(keysRow4, "ZXCVBNM");
+            AddKeys(keysRow1, "789");
+            AddKeys(keysRow2, "456");
+            AddKeys(keysRow3, "123");
+            AddKeys(keysRow4, "0.");
         }
 
         private void AddKeys(StackPanel keysRow, string keys)
@@ -180,65 +153,6 @@ namespace GadgeteerHelper
             keysRow2.Children.Clear();
             keysRow3.Children.Clear();
             keysRow4.Children.Clear();
-        }
-
-
-        private interface IKeyState
-        {
-            void CreateKeys();
-        }
-
-        private class KeyStateShifted : IKeyState
-        {
-            private KeyboardHelper _parent;
-            public KeyStateShifted(KeyboardHelper parent)
-            {
-                _parent = parent;
-            }
-
-            public void CreateKeys()
-            {
-                _parent.ShiftKeys();
-            }
-        }
-
-        private class KeyStateUnshifted : IKeyState
-        {
-            private KeyboardHelper _parent;
-            public KeyStateUnshifted(KeyboardHelper parent)
-            {
-                _parent = parent;
-            }
-
-            public void CreateKeys()
-            {
-                _parent.UnShiftKeys();
-            }
-        }
-
-        private class KeyStateContext
-        {
-            private IKeyState[] _keyStates;
-            private IKeyState _currentKeyState;
-
-            public KeyStateContext(KeyboardHelper parent)
-            {
-                _keyStates = new IKeyState[] { new KeyStateUnshifted(parent), new KeyStateShifted(parent) };
-                _currentKeyState = _keyStates[0];
-            }
-
-            public void SwitchState()
-            {
-                if (_currentKeyState is KeyStateUnshifted)
-                {
-                    _currentKeyState = _keyStates[1];
-                }
-                else
-                {
-                    _currentKeyState = _keyStates[0];
-                }
-                _currentKeyState.CreateKeys();
-            }
         }
     }
 }
